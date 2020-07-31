@@ -1,0 +1,9 @@
+{
+	"SourceFiles": [
+		"C:\\Users\\ymh\\Documents\\Unreal Projects\\UnrealSample\\ActionRPG\\Source\\ActionRPG\\ActionRPG.Build.cs",
+		"C:\\Users\\ymh\\Documents\\Unreal Projects\\UnrealSample\\ActionRPG\\Source\\ActionRPGLoadingScreen\\ActionRPGLoadingScreen.Build.cs",
+		"C:\\Users\\ymh\\Documents\\Unreal Projects\\UnrealSample\\ActionRPG\\Source\\ActionRPG.Target.cs",
+		"C:\\Users\\ymh\\Documents\\Unreal Projects\\UnrealSample\\ActionRPG\\Source\\ActionRPGEditor.Target.cs"
+	],
+	"EngineVersion": "4.24.3"
+}
