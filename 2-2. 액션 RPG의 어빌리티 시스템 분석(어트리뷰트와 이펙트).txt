@@ -1,0 +1,30 @@
+#1. 어빌리티 시스템을 사용하기 위한 첫 번째 단계
+1. GameplayAbilities(게임플레이 어빌리티) 플러그인을 활성화하고, Attribute Set (어트리뷰트 세트) 클래스를 만드는 것입니다.
+어빌리티는 C++ 게임에서만 지원되는데, 어트리뷰트 세트는 UAttributeSet 의 C++ 서브클래스여야 하기 때문입니다.
+
+2. URPGAttributeSet는 current/max health (현재/최대 생명력), mana (마나), attack (공격) 및 defense (방어) buffs (버프), movement speed (이동 속도),
+대미지 산출 공식에 사용되는 temporary damage (임시 대미지) 어트리뷰트를 정의합니다.
+
+3. 이 어트리뷰트 각각(체력, 마나, 공격, 방어 등)은 FGameplayAttributeData 구조체에 정의되며,
+여기에는 영구적인 변경으로만 수정되는 Base value (기본 값)과 임시 버프/디버프로 수정되는 Current value (현재 값)을 저장합니다.
+이 클래스(URPGAttributeSet 클래스)는 몇 가지 매크로를 사용하여 이 어트리뷰트의 수정과 리플리케이트를 처리하는 상용구 코드를 추가합니다.
+
+4. ARPG 는 비교적 단순하여 어트리뷰트 세트가 하나뿐이지만,
+다른 게임(MOBA장르 게임)에서는 플레이어와 적에 공유되는 Core (코어)를 설정해 두고, Player는 그 코어(Core)를 상속한 뒤 다른 플레이어에 사용되는 부가 어트리뷰트를 포함시키면 됩니다.
+
+5. 어트리뷰트를 수정하기 전, PreAttributeChange 함수는 현재 생명력/마나를 최대 값으로 스케일 조절합니다.
+
+6. 어트리뷰트를 수정한 후, PostGameplayEffectExecute 함수는 클램프 및 그 변화 관련 내용을 다른 오브젝트에 알립니다.
+
+7.  ARPG에서 모든 캐릭터는 RPGCharacterBase 클래스를 상속하여 대미지를 받을 때와 같은 상황을 처리하는 블루프린트 이벤트가 있습니다.
+RPGCharacterBase 의 생성자는 게임플레이 이펙트가 작동할 수 있도록 URPGAbilitySystemComponent, URPGAttributeSet 서브오브젝트 생성을 담당합니다.
+게임에 따라 그 처리(컴포넌트와 어트리뷰트를 생성하는 일)는 게임 전용 AbilitySystemComponent 서브클래스 또는 컨트롤러에서 하는 것이 나을 수 있습니다. 
+또한 액터와 처음 상호작용할 때 오브젝트 오버헤드를 피하기 위해 AttributeSet 또는 AbilitySystemComponent 를 스폰하는 것이 좋을 수 있습니다.
+cf. 오버헤드 : 정한 목표를 달성하기 위해 간접적 혹은 추가적으로 요구되는 시간, 메모리, 대역폭 혹은 다른 컴퓨터 자원을 말할 수 있습니다.
+여기서는 어트리뷰트의 업데이트가 네트워크를 통해 이뤄지므로, 통신(데이터 통신)의 오버헤드를 피하기 위함입니다.
+
+8. 대미지를 적용하기 전, 캐릭터는 Health > 0 (생명력이 0 초과)여야 합니다.
+어트리뷰트의 기본값을 초기화하는 방법은 여러가지 있지만, ARPG 의 경우 Stats GameplayEffect (스탯 게임플레이 이펙트)를 사용하기로 했습니다.
+스탯 게임플레이 이펙트는 ARPGCharacterBase::AddStartupGameplayAbilities에 적용되었는데,
+캐릭터 블루프린트에서 PassiveGameplayEffects (패시브 게임플레이 이펙트) 목록을 읽은 뒤 현재 CharacterLevel (캐릭터 레벨)에 적용합니다.
+CharacterLevel (캐릭터 레벨)이 변하면, 제거한 뒤 새 레벨에 다시 추가합니다.
