@@ -22,3 +22,5 @@ AbilityTasks는 태스크 실행에 사용되는 함수, 변수, 태스크(이 �
 그런 다음 몽타주에 배치한 Anim Notify 스테이트로 게임플레이 이벤트를 전송합니다. 즉 그 이벤트가 발동되면, 어빌리티 그래프는 EventReceived 실행 핀을 가동합니다.
 ApplyEffectContainer 노드는 URPGGameplayAbility::ApplyEffectContainer 에 해당하며, 게임플레이 이펙트 세트를 적용합니다.
 각 URPGGameplayAbility 에는 FRPGGameplayEffectContainer 구조체에 대한 태그로 된 맵이 있으며, 여기에는 타깃 정보와 적용할 게임플레이 이펙트 목록이 들어갑니다.
+
+7. 
