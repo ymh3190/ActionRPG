@@ -23,4 +23,11 @@ AbilityTasks는 태스크 실행에 사용되는 함수, 변수, 태스크(이 �
 ApplyEffectContainer 노드는 URPGGameplayAbility::ApplyEffectContainer 에 해당하며, 게임플레이 이펙트 세트를 적용합니다.
 각 URPGGameplayAbility 에는 FRPGGameplayEffectContainer 구조체에 대한 태그로 된 맵이 있으며, 여기에는 타깃 정보와 적용할 게임플레이 이펙트 목록이 들어갑니다.
 
-7. 
+7. 연산자 오버로딩
+조건식에서 비교연산자(==)를 쓰는 것처럼 클래스도 클래스끼리 비교가 가능합니다.
+그런데, 클래스는 따로 함수를 정의해서 사용해야 비교할 수 있습니다.
+FGItemData 구조체타입의 두 객체(data1,data2)가 있다고 가정하면, 이 둘을 비교할 때 쓰는게 연산자 오버로딩입니다.
+bool operator==(const FGItemData& Other) const
+{
+	return ItemCount == Other.ItemCount && ItemLevel == Other.ItemLevel;
+}
