@@ -31,3 +31,17 @@ bool operator==(const FGItemData& Other) const
 {
 	return ItemCount == Other.ItemCount && ItemLevel == Other.ItemLevel;
 }
+
+8. AM_Attack_Axe 몽타주를 실행하면, Event.Montage.Shared.WeaponHit GameplayEvent 가 방출되었을 때
+RPGTargetType_UseEventData 타기팅 클래스를 사용하여 GE_PlayerAxeMelee 이펙트를 실행할 것임을 나타냅니다.
+그 타깃 유형은 RPGTargetType.cpp 파일에 네이티브 C++ 로 구현되어 있으며, 전달된 EventData 에서 타깃 액터와 히트 결과를 추출합니다.
+그 맵의 두 번째 엘리먼트는 BurstPound 특수 공격을 실행하는데, 이 스킬은 나중에 자세이 설명합니다.
+
+9. ApplyEffectContainer 는 두 가지 작업을 합니다. 첫째, 이 맵 안에서 전달된 태그에 일치하는 FRPGGameplayEffectContainer 를 찾습니다.
+찾으면 TargetData 와 EffectSpecs 목록이 들어있는 FRPGGameplayEffectContainerSpec 을 생성합니다.
+그런 다음 그 ContainerSpec 을 적용하면, 타깃에 실제 대미지를 입힙니다.
+타깃 데이터는 FGameplayAbilityTargetDataHandle 이며 히트 결과, 액터, 또는 다른 게임 전용 객체가 들어있는 다형성 타깃 구조체 배열을 가리킵니다.
+EffectSpecs 는 FGameplayEffectSpecHandle 배열로 적용할 이펙트와 캡처한 어트리뷰트 값 목록을 가리킵니다.
+이펙트와 타깃 데이터 캡처가 완료되면, 나중에 전달, 수정, 실행할 수 있습니다. 하지만 밀리의 경우, 캡처 직후 실행됩니다.
+어빌리티 시스템을 사용하는 게임은 아마도 ApplyEffectContainer 비슷한 시스템을 구현하는 것이 좋은데,
+그래야 블루프린트 로직은 부모 어빌리티에 넣고 실행할 이펙트 목록은 자손 블루프린트에 넣기가 쉬워집니다.

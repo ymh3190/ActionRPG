@@ -1,0 +1,11 @@
+1. Action RPG (ARPG) 의 스킬은 밀리 어트리뷰트와 비슷하지만 타기팅 및 비용에 다른 로직을 사용합니다.
+파이어볼을 제외한 모든 스킬과 무기 부 공격은 밀리 어빌리티와 비슷한 블루프린트 로직을 사용하지만, 실제 타기팅은 블루프린트에서 일어납니다.
+TargetTypes 는 인스턴스가 아닌 const 블루프린트 (또는 네이티브 클래스)로 콜리전 트레이스 로직 실행이 가능합니다. 
+구체적으로, TargetType_SphereTrace 의 블루프린트 서브클래스를 사용하여 구체 충돌 모양을 사용한 트레이스 시리즈를 실행합니다.
+범위와 반경이 각기 다른 스킬마다 TargetType_SphereTrace 서브클래스를 생성한 뒤 각자의 EffectContainerMap 에서 그 서브클래스를 사용합니다.
+TargetTypes 는 ARPG 전용 클래스로 예측이 없는 게임에서의 타기팅 방법 예제입니다.
+대부분의 게임은 타기팅이 보다 복잡할 것이고 퍼포먼스 때문에 전부 네이티브 코드로 구현하는 것이 좋습니다.
+
+2. 스킬 역시 대미지 이펙트에 추가로 Cooldown (쿨다운) 및 Cost (비용)이 있습니다. 예를 들어 GA_PlayerSkillFireWave 어빌리티는
+GE_PlayerSkillFireWave 대미지 이펙트를 가리키고, GE_PlayerSkillManaCost 이펙트로 마나 사용 처리, GE_PlayerSkillCooldown 이펙트로 쿨다운을 관리합니다.
+
